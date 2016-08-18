@@ -39,9 +39,10 @@ class Recorder extends Component {
 
   constructor(props) {
     super(props);
-  
+    
+    this.recording = false;
+
     this.state = {
-      recording: false,
     };
   }
 
@@ -49,8 +50,8 @@ class Recorder extends Component {
 
   // Start recording of the current session
   record() {
-    if (this.state.recording) return;
-    this.state.recording = true;
+    if (this.recording) return;
+    this.recording = true;
     NativeModules.RNRecorderManager.record();
   }
 
@@ -61,11 +62,10 @@ class Recorder extends Component {
 
   // Pause recording of the current session
   pause() {
-    if (!this.state.recording) return;
-
+    if (!this.recording) return;
     var onNewSegment = this.props.onNewSegment || function() {};
     NativeModules.RNRecorderManager.pause(onNewSegment);
-    this.state.recording = false;
+    this.recording = false;
   }
 
   // Save the recording
